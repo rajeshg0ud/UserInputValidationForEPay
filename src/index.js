@@ -1,17 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {Provider} from 'react-redux';
+import {store} from './ReduxStore/store'
+import UserInput from './Components/UserInput';
+import './index.css'
+import Preview from './Components/Preview';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom'
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const App=()=>{
+  return(
+    <div className='main-container'>
+     <Provider store={store}>
+     <Outlet />
+     </Provider>
+    </div>
+  )
+}
+
+const AppLayout=createBrowserRouter([{
+  path:"/",
+  element: <App />,
+ children:[{
+    path:"/",
+     element: <UserInput />,
+  },
+  {
+    path:"/Preview",
+  element: <Preview />,
+  }]
+}])
+
+
+const root= ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(<RouterProvider router={AppLayout} />)
